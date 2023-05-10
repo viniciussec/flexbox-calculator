@@ -17,17 +17,16 @@ export function getColor(type) {
   }
 }
 
-export default function Button({
-  color,
-  children,
-  number,
-  operation,
-  dot,
-  other,
-  type,
-}) {
-  const value = useValueStore((state) => state.value);
-  const setValue = useValueStore((state) => state.set);
+export default function Button({ children, operation, dot, type }) {
+  const value = useValueStore((state) => state.value.display);
+  const setValue = useValueStore((state) => state.setNumber);
+  const setOperator = useValueStore((state) => state.setOperator);
+  const clear = useValueStore((state) => state.clear);
+  const setResult = useValueStore((state) => state.setResult);
+
+  const { firstValue, mainOperator, secondValue } = useValueStore(
+    (state) => state.value
+  );
 
   function handlePress() {
     if (dot) {
@@ -41,27 +40,28 @@ export default function Button({
     }
 
     if (children === "AC") {
-      setValue("0");
+      clear();
     }
 
     if (operation === "PLUS") {
-      setValue(value + "+");
+      setOperator("+");
     }
 
     if (operation === "MINUS") {
-      setValue(value + "-");
+      setOperator("-");
     }
 
     if (operation === "TIMES") {
-      setValue(value + "*");
+      setOperator("*");
     }
 
     if (operation === "DIVIDE") {
-      setValue(value + "/");
+      setOperator("/");
     }
 
     if (operation === "EQUALS") {
-      setValue(eval(value));
+      console.log(firstValue + mainOperator + secondValue);
+      setResult(String(eval(firstValue + mainOperator + secondValue)));
     }
   }
 

@@ -1,9 +1,57 @@
 import { create } from "zustand";
 
+const INITIAL_STATE = {
+  firstValue: "0",
+  secondValue: "0",
+  mainOperator: "",
+  result: "0",
+  display: "0",
+  history: {
+    firstValue: "0",
+    secondValue: "0",
+    mainOperator: "",
+  },
+};
+
 const useValueStore = create((set) => ({
-  value: '0',
-  set: (state) => set(() => ({ value: state })),
-  clear: () => set({ value: '0' }),
+  value: INITIAL_STATE,
+  setNumber: (value) =>
+    set((prev) => {
+      if (prev.value.mainOperator === "") {
+        return {
+          value: {
+            ...prev.value,
+            firstValue: value,
+            display: value,
+          },
+        };
+      } else {
+        return {
+          value: {
+            ...prev.value,
+            secondValue: value,
+            display: value,
+          },
+        };
+      }
+    }),
+  setOperator: (value) =>
+    set((prev) => ({ value: { ...prev.value, mainOperator: value, display: '0' } })),
+  setResult: (value) =>
+    set((prev) => ({
+      value: {
+        ...prev,
+        result: value,
+        display: value,
+        firstValue: value,
+        history: {
+          firstValue: prev.value.firstValue,
+          secondValue: prev.value.secondValue,
+          mainOperator: prev.value.mainOperator,
+        },
+      },
+    })),
+  clear: () => set({ value: INITIAL_STATE }),
 }));
 
 export default useValueStore;

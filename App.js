@@ -4,19 +4,25 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Button, { getColor } from "./components/Button";
 import useValueStore from "./store/value";
+import { useEffect } from "react";
 
 export default function App() {
-  const value = useValueStore((state) => state.value);
+  const value = useValueStore((state) => state.value.display);
+  const history = useValueStore((state) => state.value.history);
+
+  useEffect(() => {
+    console.log(history)
+  })
 
   return (
     <View style={styles.container}>
       <View style={styles.display}>
         <View style={styles.history}>
-          <Text style={styles.historyText}>308</Text>
+          <Text style={styles.historyText}>{history.firstValue}</Text>
           <Text style={styles.historyText}>
             <FontAwesome5 name="times" size={15} color="#d45f60" />
           </Text>
-          <Text style={styles.historyText}>42</Text>
+          <Text style={styles.historyText}>{history.secondValue}</Text>
         </View>
         <Text style={[styles.text, { fontSize: 50, letterSpacing: 2 }]}>
           {value}
@@ -24,9 +30,7 @@ export default function App() {
       </View>
       <View style={styles.buttonSection}>
         <View style={styles.buttonRow}>
-          <Button type="OTHER">
-            AC
-          </Button>
+          <Button type="OTHER">AC</Button>
           <Button type="OTHER">
             <MaterialCommunityIcons
               name="plus-minus-variant"
