@@ -2,9 +2,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Button from "./components/Button";
+import Button, { getColor } from "./components/Button";
+import useValueStore from "./store/value";
 
 export default function App() {
+  const value = useValueStore((state) => state.value);
+
   return (
     <View style={styles.container}>
       <View style={styles.display}>
@@ -16,53 +19,75 @@ export default function App() {
           <Text style={styles.historyText}>42</Text>
         </View>
         <Text style={[styles.text, { fontSize: 50, letterSpacing: 2 }]}>
-          12936
+          {value}
         </Text>
       </View>
       <View style={styles.buttonSection}>
         <View style={styles.buttonRow}>
-          <Button color="#26f7d2">AC</Button>
-          <Button color="#26f7d2">
+          <Button type="OTHER">
+            AC
+          </Button>
+          <Button type="OTHER">
             <MaterialCommunityIcons
               name="plus-minus-variant"
               size={26}
-              color="#26f7d2"
+              color={getColor("OTHER")}
             />
           </Button>
-          <Button color="#26f7d2">
-            <FontAwesome5 name="percentage" size={24} color="#26f7d2" />
+          <Button type="OTHER">
+            <FontAwesome5
+              name="percentage"
+              size={24}
+              color={getColor("OTHER")}
+            />
           </Button>
-          <Button color="#d45f60">
-            <FontAwesome5 name="divide" size={24} color="#d45f60" />
+          <Button type="OPERATION" operation="DIVIDE">
+            <FontAwesome5
+              name="divide"
+              size={24}
+              color={getColor("OPERATION")}
+            />
           </Button>
         </View>
         <View style={styles.buttonRow}>
-          <Button color="white">7</Button>
-          <Button color="white">8</Button>
-          <Button color="white">9</Button>
-          <Button color="#d45f60">
-            <FontAwesome5 name="times" size={24} color="#d45f60" />
+          <Button type="NUMBER">7</Button>
+          <Button type="NUMBER">8</Button>
+          <Button type="NUMBER">9</Button>
+          <Button type="OPERATION" operation="TIMES">
+            <FontAwesome5
+              name="times"
+              size={24}
+              color={getColor("OPERATION")}
+            />
           </Button>
         </View>
         <View style={styles.buttonRow}>
-          <Button color="white">4</Button>
-          <Button color="white">5</Button>
-          <Button color="white">6</Button>
-          <Button color="#d45f60">-</Button>
-        </View>
-        <View style={styles.buttonRow}>
-          <Button color="white">1</Button>
-          <Button color="white">2</Button>
-          <Button color="white">3</Button>
-          <Button color="#d45f60">+</Button>
-        </View>
-        <View style={styles.buttonRow}>
-          <Button color="white">
-            <FontAwesome name="rotate-left" size={24} color="white" />
+          <Button type="NUMBER">4</Button>
+          <Button type="NUMBER">5</Button>
+          <Button type="NUMBER">6</Button>
+          <Button type="OPERATION" operation="MINUS">
+            -
           </Button>
-          <Button color="white">0</Button>
-          <Button color="white">.</Button>
-          <Button color="#d45f60">=</Button>
+        </View>
+        <View style={styles.buttonRow}>
+          <Button type="NUMBER">1</Button>
+          <Button type="NUMBER">2</Button>
+          <Button type="NUMBER">3</Button>
+          <Button type="OPERATION" operation="PLUS">
+            +
+          </Button>
+        </View>
+        <View style={styles.buttonRow}>
+          <Button>
+            <FontAwesome name="rotate-left" size={24} />
+          </Button>
+          <Button type="NUMBER" number>
+            0
+          </Button>
+          <Button type="DOT">.</Button>
+          <Button type="OPERATION" operation="EQUALS">
+            =
+          </Button>
         </View>
       </View>
     </View>
