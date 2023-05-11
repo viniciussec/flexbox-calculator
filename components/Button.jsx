@@ -36,6 +36,7 @@ export default function Button({ children, type }) {
         break;
       case "RETURN":
         setNumber(display.slice(0, -1));
+        break;
       case "DOT":
         if (!display.includes(".")) {
           setNumber(display + ".");
