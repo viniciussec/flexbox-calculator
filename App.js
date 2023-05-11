@@ -1,15 +1,14 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import Button from "./components/Button";
 import useValueStore from "./store/value";
 import getColor from "./utils/getColor";
 import getIcon from "./utils/getIcon";
 import getStyles from "./styles/app";
 import useThemeStore from "./store/theme";
+import ToggleTheme from "./components/ToggleTheme";
 
 export default function App() {
-  const toggleTheme = useThemeStore((state) => state.toggle);
   const styles = getStyles(useThemeStore((state) => state.theme));
-
   const value = useValueStore((state) => state.value.display);
   const history = useValueStore((state) => state.value.history);
 
@@ -24,6 +23,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.display}>
+        <ToggleTheme />
         {history.mainOperator && (
           <View style={styles.history}>
             <Text style={styles.historyText}>
@@ -50,7 +50,7 @@ export default function App() {
       </View>
       <View style={styles.buttonSection}>
         <View style={styles.buttonRow}>
-          <Button type="CLEAR">AC</Button>
+          <Button type="CLEAR">{value != 0 ? "C" : "AC"}</Button>
           <Button type="INVERT">+/-</Button>
           <Button type="PERCENTAGE">%</Button>
           <Button type="OPERATION">/</Button>
