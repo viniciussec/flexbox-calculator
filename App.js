@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import Button from "./components/Button";
 import useValueStore from "./store/value";
 import getColor from "./utils/getColor";
@@ -36,21 +34,9 @@ export default function App() {
       </View>
       <View style={styles.buttonSection}>
         <View style={styles.buttonRow}>
-          <Button type="OTHER">AC</Button>
-          <Button type="OTHER">
-            <MaterialCommunityIcons
-              name="plus-minus-variant"
-              size={26}
-              color={getColor("OTHER")}
-            />
-          </Button>
-          <Button type="OTHER">
-            <FontAwesome5
-              name="percentage"
-              size={24}
-              color={getColor("OTHER")}
-            />
-          </Button>
+          <Button type="CLEAR">AC</Button>
+          <Button type="INVERT">+/-</Button>
+          <Button type="PERCENTAGE">%</Button>
           <Button type="OPERATION">/</Button>
         </View>
         <View style={styles.buttonRow}>
@@ -72,12 +58,10 @@ export default function App() {
           <Button type="OPERATION">+</Button>
         </View>
         <View style={styles.buttonRow}>
-          <Button>
-            <FontAwesome name="rotate-left" size={24} />
-          </Button>
+          <Button type="RETURN">{"<-"}</Button>
           <Button type="NUMBER">0</Button>
           <Button type="DOT">.</Button>
-          <Button operation="EQUALS">=</Button>
+          <Button type="EQUALS">=</Button>
         </View>
       </View>
     </View>

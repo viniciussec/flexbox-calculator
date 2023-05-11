@@ -4,7 +4,7 @@ import useValueStore from "../store/value";
 import getColor from "../utils/getColor";
 import getIcon from "../utils/getIcon";
 
-export default function Button({ children, operation, dot, type }) {
+export default function Button({ children, type }) {
   const { setNumber, setOperator, clear, setResult } = useValueStore(
     (state) => state
   );
@@ -14,26 +14,32 @@ export default function Button({ children, operation, dot, type }) {
   );
 
   function handlePress() {
-    if (type === "DOT") {
-      if (!display.includes(".")) {
-        setNumber(display + ".");
-      }
-    }
-
-    if (type === "NUMBER") {
-      setNumber(display === "0" ? children : display + children);
-    }
-
-    if (children === "AC") {
-      clear();
-    }
-
-    if (type === "OPERATION") {
-      setOperator(children);
-    }
-
-    if (operation === "EQUALS") {
-      setResult(String(eval(firstValue + mainOperator + secondValue)));
+    switch (type) {
+      case "NUMBER":
+        setNumber(display === "0" ? children : display + children);
+        break;
+      case "OPERATION":
+        setOperator(children);
+        break;
+      case "DOT":
+        if (!display.includes(".")) {
+          setNumber(display + ".");
+        }
+        break;
+      case "CLEAR":
+        clear();
+        break;
+      case "EQUALS":
+        if (!mainOperator) return setResult(firstValue);
+        setResult(String(eval(firstValue + mainOperator + secondValue)));
+        break;
+      case "PERCENTAGE":
+        setResult(String(eval(display) / 100));
+        break;
+      case "INVERT":
+        setNumber(eval(display) * -1);
+      default:
+        break;
     }
   }
 
