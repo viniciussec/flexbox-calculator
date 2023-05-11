@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import useValueStore from "../store/value";
 import getColor from "../utils/getColor";
 import getIcon from "../utils/getIcon";
+import getThemeColor from "../utils/colors";
 
 export default function Button({ children, type }) {
   const { setNumber, setOperator, clear, setResult } = useValueStore(
@@ -21,23 +22,26 @@ export default function Button({ children, type }) {
       case "OPERATION":
         setOperator(children);
         break;
-      case "DOT":
-        if (!display.includes(".")) {
-          setNumber(display + ".");
-        }
-        break;
       case "CLEAR":
         clear();
-        break;
-      case "EQUALS":
-        if (!mainOperator) return setResult(firstValue);
-        setResult(String(eval(firstValue + mainOperator + secondValue)));
         break;
       case "PERCENTAGE":
         setResult(String(eval(display) / 100));
         break;
       case "INVERT":
         setNumber(eval(display) * -1);
+        break;
+      case "RETURN":
+        setNumber(display.slice(0, -1));
+      case "DOT":
+        if (!display.includes(".")) {
+          setNumber(display + ".");
+        }
+        break;
+      case "EQUALS":
+        if (!mainOperator) return setResult(firstValue);
+        setResult(String(eval(firstValue + mainOperator + secondValue)));
+        break;
       default:
         break;
     }
@@ -56,13 +60,13 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     color: "white",
-    backgroundColor: "#272b33",
+    backgroundColor: getThemeColor().button,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
-    color: "white",
+    color: getThemeColor().text,
     fontSize: 25,
     fontWeight: "600",
   },

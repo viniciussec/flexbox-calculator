@@ -40,7 +40,7 @@ const useValueStore = create((set) => ({
   setResult: (value) =>
     set((prev) => ({
       value: {
-        ...prev,
+        ...INITIAL_STATE,
         result: value,
         display: value,
         firstValue: value,

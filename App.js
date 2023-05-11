@@ -1,20 +1,30 @@
 import { StyleSheet, Text, View } from "react-native";
-
 import Button from "./components/Button";
 import useValueStore from "./store/value";
 import getColor from "./utils/getColor";
 import getIcon from "./utils/getIcon";
+import getThemeColor from "./utils/colors";
 
 export default function App() {
   const value = useValueStore((state) => state.value.display);
   const history = useValueStore((state) => state.value.history);
+
+  function capNumber(number) {
+    if (number.length > 9) {
+      return number.substring(0, 9) + "...";
+    } else {
+      return number;
+    }
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.display}>
         {history.mainOperator && (
           <View style={styles.history}>
-            <Text style={styles.historyText}>{history.firstValue}</Text>
+            <Text style={styles.historyText}>
+              {capNumber(history.firstValue)}
+            </Text>
             <Text
               style={[
                 styles.historyText,
@@ -25,11 +35,13 @@ export default function App() {
             >
               {getIcon(history.mainOperator, 15)}
             </Text>
-            <Text style={styles.historyText}>{history.secondValue}</Text>
+            <Text style={styles.historyText}>
+              {capNumber(history.secondValue)}
+            </Text>
           </View>
         )}
         <Text style={[styles.text, { fontSize: 50, letterSpacing: 2 }]}>
-          {value}
+          {capNumber(value)}
         </Text>
       </View>
       <View style={styles.buttonSection}>
@@ -70,7 +82,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#22252d",
+    backgroundColor: getThemeColor().display,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
@@ -81,21 +93,21 @@ const styles = StyleSheet.create({
     flex: 6,
     width: "100%",
     gap: 10,
-    backgroundColor: "#292d36",
+    backgroundColor: getThemeColor().buttonSection,
     paddingVertical: 25,
     paddingHorizontal: 20,
     borderRadius: 30,
   },
   buttonRow: {
     flexDirection: "row",
-    backgroundColor: "#292d36",
+    backgroundColor: getThemeColor().buttonSection,
     flex: 1,
     gap: 10,
   },
   button: {
     flex: 1,
     color: "white",
-    backgroundColor: "#272b33",
+    backgroundColor: getThemeColor().button,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
@@ -107,7 +119,7 @@ const styles = StyleSheet.create({
   },
   display: {
     color: "white",
-    backgroundColor: "#22252d",
+    backgroundColor: getThemeColor().display,
     flex: 4,
     width: "100%",
     alignItems: "flex-end",
