@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   mainOperator: "",
   result: "0",
   display: "0",
+  blocked: false,
   history: {
     firstValue: "0",
     secondValue: "0",
@@ -36,7 +37,9 @@ const useValueStore = create((set) => ({
       }
     }),
   setOperator: (value) =>
-    set((prev) => ({ value: { ...prev.value, mainOperator: value, display: '0' } })),
+    set((prev) => ({
+      value: { ...prev.value, mainOperator: value, display: "0" },
+    })),
   setResult: (value) =>
     set((prev) => ({
       value: {
@@ -52,6 +55,7 @@ const useValueStore = create((set) => ({
       },
     })),
   clear: () => set({ value: INITIAL_STATE }),
+  block: () => set((prev) => ({ value: { ...prev.value, blocked: true } })),
 }));
 
 export default useValueStore;

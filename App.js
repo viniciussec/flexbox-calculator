@@ -9,11 +9,12 @@ import ToggleTheme from "./components/ToggleTheme";
 
 export default function App() {
   const styles = getStyles(useThemeStore((state) => state.theme));
-  const value = useValueStore((state) => state.value.display);
-  const history = useValueStore((state) => state.value.history);
+  const { display, history, mainOperator } = useValueStore(
+    (state) => state.value
+  );
 
   function capNumber(number) {
-    if (number.length > 9) {
+    if (number?.length > 9) {
       return number.substring(0, 9) + "...";
     } else {
       return number;
@@ -45,12 +46,14 @@ export default function App() {
           </View>
         )}
         <Text style={[styles.text, { fontSize: 50, letterSpacing: 2 }]}>
-          {capNumber(value)}
+          {capNumber(display)}
         </Text>
       </View>
       <View style={styles.buttonSection}>
         <View style={styles.buttonRow}>
-          <Button type="CLEAR">{value != 0 ? "C" : "AC"}</Button>
+          <Button type="CLEAR">
+            {mainOperator === "" && display === "0" ? "AC" : "C"}
+          </Button>
           <Button type="INVERT">+/-</Button>
           <Button type="PERCENTAGE">%</Button>
           <Button type="OPERATION">/</Button>
