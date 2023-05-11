@@ -1,13 +1,13 @@
 import getThemeColor from "./colors";
 
-export default function getColor(type) {
+export default function getColor(type, theme) {
   switch (type) {
     case "NUMBER":
-      return getThemeColor().text;
+      return getThemeColor(theme).text;
     case "DOT":
-      return getThemeColor().text;
+      return getThemeColor(theme).text;
     case "RETURN":
-      return getThemeColor().text;
+      return getThemeColor(theme).text;
     case "OPERATION":
       return "#d45f60";
     case "EQUALS":

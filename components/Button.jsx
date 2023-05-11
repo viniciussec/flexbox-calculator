@@ -1,11 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import useValueStore from "../store/value";
 import getColor from "../utils/getColor";
 import getIcon from "../utils/getIcon";
-import getThemeColor from "../utils/colors";
+import getStyles from "../styles/button";
+import useThemeStore from "../store/theme";
 
 export default function Button({ children, type }) {
+  const theme = useThemeStore((state) => state.theme);
+  const styles = getStyles(theme);
+
   const { setNumber, setOperator, clear, setResult } = useValueStore(
     (state) => state
   );
@@ -49,25 +53,9 @@ export default function Button({ children, type }) {
 
   return (
     <TouchableOpacity onPress={() => handlePress()} style={styles.button}>
-      <Text style={[styles.text, { color: getColor(type) }]}>
+      <Text style={[styles.text, { color: getColor(type, theme) }]}>
         {getIcon(children)}
       </Text>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    flex: 1,
-    color: "white",
-    backgroundColor: getThemeColor().button,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    color: getThemeColor().text,
-    fontSize: 25,
-    fontWeight: "600",
-  },
-});
