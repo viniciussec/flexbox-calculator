@@ -1,73 +1,47 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import useValueStore from "../store/value";
-
-export function getColor(type) {
-  switch (type) {
-    case "NUMBER":
-      return "white";
-    case "DOT":
-      return "white";
-    case "OPERATION":
-      return "#d45f60";
-    case "OTHER":
-      return "#26f7d2";
-    default:
-      return "white";
-  }
-}
+import getColor from "../utils/getColor";
+import getIcon from "../utils/getIcon";
 
 export default function Button({ children, operation, dot, type }) {
-  const value = useValueStore((state) => state.value.display);
-  const setValue = useValueStore((state) => state.setNumber);
-  const setOperator = useValueStore((state) => state.setOperator);
-  const clear = useValueStore((state) => state.clear);
-  const setResult = useValueStore((state) => state.setResult);
+  const { setNumber, setOperator, clear, setResult } = useValueStore(
+    (state) => state
+  );
 
-  const { firstValue, mainOperator, secondValue } = useValueStore(
+  const { firstValue, mainOperator, secondValue, display } = useValueStore(
     (state) => state.value
   );
 
   function handlePress() {
-    if (dot) {
-      if (!value.includes(".")) {
-        setValue(value + ".");
+    if (type === "DOT") {
+      if (!display.includes(".")) {
+        setNumber(display + ".");
       }
     }
 
     if (type === "NUMBER") {
-      setValue(value === "0" ? children : value + children);
+      setNumber(display === "0" ? children : display + children);
     }
 
     if (children === "AC") {
       clear();
     }
 
-    if (operation === "PLUS") {
-      setOperator("+");
-    }
-
-    if (operation === "MINUS") {
-      setOperator("-");
-    }
-
-    if (operation === "TIMES") {
-      setOperator("*");
-    }
-
-    if (operation === "DIVIDE") {
-      setOperator("/");
+    if (type === "OPERATION") {
+      setOperator(children);
     }
 
     if (operation === "EQUALS") {
-      console.log(firstValue + mainOperator + secondValue);
       setResult(String(eval(firstValue + mainOperator + secondValue)));
     }
   }
 
   return (
     <TouchableOpacity onPress={() => handlePress()} style={styles.button}>
-      <Text style={[styles.text, { color: getColor(type) }]}>{children}</Text>
+      <Text style={[styles.text, { color: getColor(type) }]}>
+        {getIcon(children)}
+      </Text>
     </TouchableOpacity>
   );
 }

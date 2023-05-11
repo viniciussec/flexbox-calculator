@@ -2,28 +2,34 @@ import { StyleSheet, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Button, { getColor } from "./components/Button";
+import Button from "./components/Button";
 import useValueStore from "./store/value";
-import { useEffect } from "react";
+import getColor from "./utils/getColor";
+import getIcon from "./utils/getIcon";
 
 export default function App() {
   const value = useValueStore((state) => state.value.display);
   const history = useValueStore((state) => state.value.history);
 
-  useEffect(() => {
-    console.log(history)
-  })
-
   return (
     <View style={styles.container}>
       <View style={styles.display}>
-        <View style={styles.history}>
-          <Text style={styles.historyText}>{history.firstValue}</Text>
-          <Text style={styles.historyText}>
-            <FontAwesome5 name="times" size={15} color="#d45f60" />
-          </Text>
-          <Text style={styles.historyText}>{history.secondValue}</Text>
-        </View>
+        {history.mainOperator && (
+          <View style={styles.history}>
+            <Text style={styles.historyText}>{history.firstValue}</Text>
+            <Text
+              style={[
+                styles.historyText,
+                {
+                  color: getColor("OPERATION"),
+                },
+              ]}
+            >
+              {getIcon(history.mainOperator, 15)}
+            </Text>
+            <Text style={styles.historyText}>{history.secondValue}</Text>
+          </View>
+        )}
         <Text style={[styles.text, { fontSize: 50, letterSpacing: 2 }]}>
           {value}
         </Text>
@@ -45,53 +51,33 @@ export default function App() {
               color={getColor("OTHER")}
             />
           </Button>
-          <Button type="OPERATION" operation="DIVIDE">
-            <FontAwesome5
-              name="divide"
-              size={24}
-              color={getColor("OPERATION")}
-            />
-          </Button>
+          <Button type="OPERATION">/</Button>
         </View>
         <View style={styles.buttonRow}>
           <Button type="NUMBER">7</Button>
           <Button type="NUMBER">8</Button>
           <Button type="NUMBER">9</Button>
-          <Button type="OPERATION" operation="TIMES">
-            <FontAwesome5
-              name="times"
-              size={24}
-              color={getColor("OPERATION")}
-            />
-          </Button>
+          <Button type="OPERATION">*</Button>
         </View>
         <View style={styles.buttonRow}>
           <Button type="NUMBER">4</Button>
           <Button type="NUMBER">5</Button>
           <Button type="NUMBER">6</Button>
-          <Button type="OPERATION" operation="MINUS">
-            -
-          </Button>
+          <Button type="OPERATION">-</Button>
         </View>
         <View style={styles.buttonRow}>
           <Button type="NUMBER">1</Button>
           <Button type="NUMBER">2</Button>
           <Button type="NUMBER">3</Button>
-          <Button type="OPERATION" operation="PLUS">
-            +
-          </Button>
+          <Button type="OPERATION">+</Button>
         </View>
         <View style={styles.buttonRow}>
           <Button>
             <FontAwesome name="rotate-left" size={24} />
           </Button>
-          <Button type="NUMBER" number>
-            0
-          </Button>
+          <Button type="NUMBER">0</Button>
           <Button type="DOT">.</Button>
-          <Button type="OPERATION" operation="EQUALS">
-            =
-          </Button>
+          <Button operation="EQUALS">=</Button>
         </View>
       </View>
     </View>
